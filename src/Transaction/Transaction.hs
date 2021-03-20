@@ -5,6 +5,8 @@ module Transaction.Transaction where
 import Data.Either (fromRight, isRight)
 import Data.Int
 import Data.Serialize
+import Data.Serialize.Text ()
+import Data.Text (Text)
 import Date.Date
 import GHC.Generics
 
@@ -37,7 +39,7 @@ data Transaction = Transaction
   { amount :: Double,
     date :: Date,
     transactionType :: TransactionType,
-    description :: String
+    description :: Text
   }
   deriving (Eq, Show)
 
@@ -53,7 +55,7 @@ instance Serialize Transaction where
     dt <- get
     t <- get :: Get TransactionType
     d <- get
-    return $ Transaction a dt Income d
+    return $ Transaction a dt t d
 
 data TransactionError
   = TransactionInitialization
@@ -66,7 +68,7 @@ mkTransaction ::
   Int8 ->
   Int16 ->
   TransactionType ->
-  String ->
+  Text ->
   Either TransactionError Transaction
 mkTransaction am da mo ye ty de =
   if (isRight dt)
@@ -91,14 +93,6 @@ filterTransactionType ty ts = filter (isTransactionType ty) ts
 
 filterDate :: Date -> Date -> [Transaction] -> [Transaction]
 filterDate start end ts = filter (\x -> start <= date x && end >= date x) ts
-
-newtype Transactions = Transactions [Transaction] deriving (Eq, Show)
-
-instance Serialize Transactions where
-  put (Transactions ts) = put ts
-  get = do
-    ts <- get
-    return $ ts
 
 tranEx1 = mkTransaction 500 5 1 2021 Income "Work"
 

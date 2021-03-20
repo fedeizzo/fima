@@ -60,7 +60,15 @@ executable fima
   -- Other library packages from which modules are imported.
   build-depends:       base ^>=4.13.0.0
                      , cereal == 0.5.8.1
+                     , cereal-text == 0.1.0.2
                      , bytestring == 0.10.10.1
+                     , brick == 0.52.1
+                     , text == 1.2.4.0
+                     , containers == 0.6.2.1
+                     , array == 0.5.4.0
+                     , mtl == 2.2.2
+                     , transformers == 0.5.6.2
+                     , unix == 2.7.2.2
 
   -- Directories containing source files.
   hs-source-dirs:      src
