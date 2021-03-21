@@ -79,9 +79,9 @@ mkDate ::
   Int16 ->
   Either DateError Date
 mkDate day month year
-  | day < 1 && day > 31 = Left DayOutOfRange
-  | month < 1 && month > 12 = Left MonthOutOfRange
-  | year < 2000 && year > 3000 = Left YearOutOfRange
+  | day < 1 || day > 31 = Left DayOutOfRange
+  | month < 1 || month > 12 = Left MonthOutOfRange
+  | year < 2000 || year > 3000 = Left YearOutOfRange
   | otherwise = Right $ Date (Day day) (Month month) (Year year)
 
 dt1 = Date (Day 1) (Month 1) (Year 2018)

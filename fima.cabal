@@ -24,7 +24,12 @@ maintainer: federico.izzo99@gmail.com
 category: Finance
 extra-source-files: README
 
+common ghc-common
+  ghc-options:
+    -Wall
+
 common library-common
+  import: ghc-common
   build-depends:
     base ^>=4.13.0.0,
     cereal == 0.5.8.1,
@@ -45,6 +50,20 @@ library
   exposed-modules:
     Transaction.Transaction,
     Date.Date
+
+test-suite fima-test
+  import: library-common
+  type: exitcode-stdio-1.0
+  hs-source-dirs:
+    test,
+    src
+  main-is: Spec.hs
+  build-depends:
+    hspec == 2.7.2,
+    QuickCheck
+  other-modules:
+    Transaction.TransactionSpec,
+    Date.DateSpec
 
 executable fima
   import: library-common
