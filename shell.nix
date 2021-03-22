@@ -10,6 +10,6 @@ pkgs.stdenv.mkDerivation {
   buildInputs = project.env.nativeBuildInputs ++ [
     haskellPackages.cabal-install           # project manager
     haskellPackages.ormolu                  # formatter
-    haskellPackages.haskell-language-server # language server protocol
+    # haskellPackages.haskell-language-server # language server protocol
   ];
 }
