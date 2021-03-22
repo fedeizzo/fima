@@ -5,7 +5,7 @@ import Date.Date
 import Test.Hspec
 import Test.Hspec.QuickCheck
 import Test.QuickCheck hiding (Result)
-import Test.QuickCheck.Property (Result, succeeded, failed)
+import Test.QuickCheck.Property (Result, failed, succeeded)
 
 prop_mkDate :: Gen Result
 prop_mkDate = do
@@ -15,19 +15,19 @@ prop_mkDate = do
   let dt = mkDate d m y
   let expected = Date (Day d) (Month m) (Year y)
   return $ case dt of
-            (Right real) -> if real == expected then succeeded else failed 
-            (Left _) -> failed 
+    (Right real) -> if real == expected then succeeded else failed
+    (Left _) -> failed
 
 prop_YearOutOfRange :: Gen Result
 prop_YearOutOfRange = do
   d <- elements ([1 .. 31] :: [Int8])
   m <- elements ([1 .. 12] :: [Int8])
-  y <- elements ([0 .. 1999] ++ [3001..4000] :: [Int16])
+  y <- elements ([0 .. 1999] ++ [3001 .. 4000] :: [Int16])
   let dt = mkDate d m y
   return $ case dt of
-            (Right _) -> failed
-            (Left YearOutOfRange) -> succeeded
-            (Left _) -> failed
+    (Right _) -> failed
+    (Left YearOutOfRange) -> succeeded
+    (Left _) -> failed
 
 prop_DayOutOfRange :: Gen Result
 prop_DayOutOfRange = do
@@ -36,9 +36,9 @@ prop_DayOutOfRange = do
   y <- elements ([2000 .. 3000] :: [Int16])
   let dt = mkDate d m y
   return $ case dt of
-            (Right _) -> failed
-            (Left DayOutOfRange) -> succeeded
-            (Left _) -> failed
+    (Right _) -> failed
+    (Left DayOutOfRange) -> succeeded
+    (Left _) -> failed
 
 prop_MonthOutOfRange :: Gen Result
 prop_MonthOutOfRange = do
@@ -47,9 +47,9 @@ prop_MonthOutOfRange = do
   y <- elements ([2000 .. 3000] :: [Int16])
   let dt = mkDate d m y
   return $ case dt of
-            (Right _) -> failed
-            (Left MonthOutOfRange) -> succeeded
-            (Left _) -> failed
+    (Right _) -> failed
+    (Left MonthOutOfRange) -> succeeded
+    (Left _) -> failed
 
 spec :: Spec
 spec = do

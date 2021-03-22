@@ -5,7 +5,7 @@ module Main where
 import Control.Monad.State
 import qualified Data.ByteString as B
 import Data.Either (isRight)
-import Data.Sequence (fromList, Seq, (|>))
+import Data.Sequence (Seq, fromList, (|>))
 import Data.Serialize (decode, encode)
 import Data.Text (Text)
 import Data.Text.IO as T (getLine, putStr, putStrLn)

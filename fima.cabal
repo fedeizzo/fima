@@ -41,14 +41,15 @@ common library-common
     array == 0.5.4.0,
     mtl == 2.2.2,
     transformers == 0.5.6.2,
-    unix == 2.7.2.2
+    unix == 2.7.2.2,
+    time == 1.9.3
   default-language: Haskell2010
 
 library
   import: library-common
   hs-source-dirs: src
   exposed-modules:
-    Transaction.Transaction,
+    Data.Transaction.Transaction,
     Date.Date
 
 test-suite fima-test
