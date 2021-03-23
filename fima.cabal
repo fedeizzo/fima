@@ -49,8 +49,9 @@ library
   import: library-common
   hs-source-dirs: src
   exposed-modules:
-    Data.Transaction.Transaction,
-    Date.Date
+    Data.Transaction.Transaction
+    Data.Transaction.Operations
+    Data.Transaction.Type
 
 test-suite fima-test
   import: library-common
@@ -61,10 +62,13 @@ test-suite fima-test
   main-is: Spec.hs
   build-depends:
     hspec == 2.7.2,
-    QuickCheck
+    QuickCheck,
+    quickcheck-text == 0.1.2.1
   other-modules:
-    Transaction.TransactionSpec,
-    Date.DateSpec
+    Data.Transaction.Transaction
+    Data.Transaction.Operations
+    Data.Transaction.Type
+    Data.Transaction.OperationsSpec
 
 executable fima
   import: library-common

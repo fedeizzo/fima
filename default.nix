@@ -1,6 +1,6 @@
 { mkDerivation, array, base, brick, bytestring, cereal, cereal-text
-, containers, hspec, mtl, QuickCheck, stdenv, text, time
-, transformers, unix
+, containers, hspec, mtl, QuickCheck, quickcheck-text, stdenv, text
+, time, transformers, unix
 }:
 mkDerivation {
   pname = "fima";
@@ -18,7 +18,7 @@ mkDerivation {
   ];
   testHaskellDepends = [
     array base brick bytestring cereal cereal-text containers hspec mtl
-    QuickCheck text time transformers unix
+    QuickCheck quickcheck-text text time transformers unix
   ];
   description = "Personal finance tracking service";
   license = stdenv.lib.licenses.isc;

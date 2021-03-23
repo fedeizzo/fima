@@ -3,8 +3,8 @@
 module Data.Transaction.Operations where
 
 import Data.Text (Text)
-import Data.Transaction.Type
 import Data.Time.Calendar
+import Data.Transaction.Type
 
 mkTransaction ::
   Double ->
