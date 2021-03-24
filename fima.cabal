@@ -27,6 +27,7 @@ extra-source-files: README
 common ghc-common
   ghc-options:
     -Wall
+    -threaded
 
 common library-common
   import: ghc-common
@@ -36,6 +37,7 @@ common library-common
     cereal-text == 0.1.0.2,
     bytestring == 0.10.10.1,
     brick == 0.52.1,
+    vty == 5.28.2,
     text == 1.2.4.0,
     containers == 0.6.2.1,
     array == 0.5.4.0,
@@ -52,6 +54,7 @@ library
     Data.Transaction.Transaction
     Data.Transaction.Operations
     Data.Transaction.Type
+    Ui.Ui
 
 test-suite fima-test
   import: library-common
@@ -74,3 +77,9 @@ executable fima
   import: library-common
   main-is: Main.hs
   hs-source-dirs: exe
+  hs-source-dirs: src
+  other-modules:
+    Data.Transaction.Transaction
+    Data.Transaction.Operations
+    Data.Transaction.Type
+    Ui.Ui
