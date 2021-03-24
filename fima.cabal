@@ -32,7 +32,7 @@ common ghc-common
 common library-common
   import: ghc-common
   build-depends:
-    base ^>=4.13.0.0,
+    base == 4.13.0.0,
     cereal == 0.5.8.1,
     cereal-text == 0.1.0.2,
     bytestring == 0.10.10.1,
