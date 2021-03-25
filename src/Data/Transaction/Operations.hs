@@ -2,6 +2,9 @@
 
 module Data.Transaction.Operations where
 
+import qualified Data.ByteString as B
+import Data.Sequence (Seq, fromList, (|>))
+import Data.Serialize (decode, encode)
 import Data.Text (Text)
 import Data.Time.Calendar
 import Data.Transaction.Type
@@ -29,3 +32,12 @@ filterTransactionType ty ts = filter (\x -> transactionType x == ty) ts
 
 filterDate :: Day -> Day -> [Transaction] -> [Transaction]
 filterDate start end ts = filter (\x -> start <= date x && end >= date x) ts
+
+saveTransactions :: String -> Seq Transaction -> IO ()
+saveTransactions path ts = do
+  B.writeFile path $ encode ts
+
+loadTransactions :: String -> IO (Either String (Seq Transaction))
+loadTransactions path = do
+  ts <- B.readFile path
+  return $ (decode ts :: Either String (Seq Transaction))

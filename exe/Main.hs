@@ -2,26 +2,14 @@
 
 module Main where
 
-import Control.Monad.State
 import Brick.Main as M
-import qualified Data.ByteString as B
+import Control.Monad.State
 import Data.Either (isRight)
-import Data.Sequence (Seq, fromList, (|>))
-import Data.Serialize (decode, encode)
 import Data.Text (Text)
 import Data.Text.IO as T (getLine, putStr, putStrLn)
 import Data.Transaction.Transaction
 import System.Posix.Env (getEnvDefault)
 import Ui.Ui
-
--- saveTransactions :: String -> Seq Transaction -> IO ()
--- saveTransactions path ts = do
---   B.writeFile path $ encode ts
-
--- loadTransactions :: String -> IO (Either String (Seq Transaction))
--- loadTransactions path = do
---   ts <- B.readFile path
---   return $ (decode ts :: Either String (Seq Transaction))
 
 -- loop :: StateT (Seq Transaction) IO ()
 -- loop = do

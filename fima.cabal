@@ -55,6 +55,7 @@ library
     Data.Transaction.Operations
     Data.Transaction.Type
     Ui.Ui
+    Ui.Transaction
 
 test-suite fima-test
   import: library-common
@@ -83,3 +84,4 @@ executable fima
     Data.Transaction.Operations
     Data.Transaction.Type
     Ui.Ui
+    Ui.Transaction

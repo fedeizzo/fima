@@ -5,21 +5,13 @@ import Brick.Main as M
 import qualified Brick.Types as T
 import Brick.Widgets.Border as B
 import Brick.Widgets.Center as C
+import Data.Transaction.Transaction
 import qualified Graphics.Vty as V
+import Ui.Transaction (tranStyleMap, transactionRow)
 
 data Name
   = VP1
   deriving (Ord, Show, Eq)
-
-transactionRow :: Int -> Widget Name
--- transactionRow n = do
---   Widget Fixed Fixed $ do
---     ctx <- getContext
---     render $ str (show n <> " " <> show (availWidth ctx) <> "-")
-
-transactionRow n = hBox $ fmap (C.hCenter . str) [show a <> " €", "01/01/2" <> show n, "type" <> show n, "desc" <> show n]
-  where
-    a = if n `mod` 3 == 0 then n else (- n)
 
 transactionHeader :: Widget Name
 transactionHeader = vLimit 1 $ hBox $ fmap (C.center . str) ["Amount", "Date", "Type", "Desc"]
@@ -28,7 +20,7 @@ drawUi :: () -> [Widget Name]
 drawUi = const [ui]
   where
     ui = B.border $ hBox [hLimitPercent 66 transactions, B.vBorder, insert]
-    transactions = vBox [vLimitPercent 50 transactionHeader, B.hBorder, viewport VP1 Vertical $ vBox $ fmap transactionRow [100 .. 200]]
+    transactions = vBox [vLimitPercent 50 transactionHeader, B.hBorder, viewport VP1 Vertical $ vBox $ fmap transactionRow [t_example, t_example2, t_example3, t_example4]]
     insert = vBox [str "I do not know", B.hBorder, str "The same here"]
 
 vp1Scroll :: M.ViewportScroll Name
@@ -46,6 +38,6 @@ app =
     { M.appDraw = drawUi,
       M.appStartEvent = return,
       M.appHandleEvent = appEvent,
-      M.appAttrMap = const $ attrMap V.defAttr [],
+      M.appAttrMap = const tranStyleMap,
       M.appChooseCursor = M.neverShowCursor
     }

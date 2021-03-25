@@ -63,9 +63,10 @@ prop_evalTransactions = do
   ts <- arbitrary :: Gen [Transaction]
   let expected = foldl (+) 0 $ fmap amount ts
   let real = evalTransactions ts
-  return $ if real == expected
-             then succeeded
-             else failed
+  return $
+    if real == expected
+      then succeeded
+      else failed
 
 spec :: Spec
 spec = do
