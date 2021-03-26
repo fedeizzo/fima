@@ -25,6 +25,7 @@ cabal.project.local~
 
 # NIX
 .envrc
+result
 
 # PROJECT
 .fima_data
