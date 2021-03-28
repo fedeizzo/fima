@@ -1,5 +1,5 @@
 {-# LANGUAGE OverloadedStrings #-}
-
+{-# LANGUAGE TemplateHaskell #-}
 module Data.Transaction.Type where
 
 import Data.Either (rights)
@@ -8,6 +8,7 @@ import Data.Serialize
 import Data.Serialize.Text ()
 import Data.Text (Text)
 import Data.Time.Calendar (Day, fromGregorian, fromGregorianValid, toGregorian)
+import Lens.Micro.TH
 
 data TransactionType
   = Wants
@@ -35,12 +36,14 @@ instance Serialize TransactionType where
       3 -> return Investment
 
 data Transaction = Transaction
-  { amount :: Double,
-    date :: Day,
-    transactionType :: TransactionType,
-    description :: Text
+  { _amount :: Double,
+    _date :: Day,
+    _transactionType :: TransactionType,
+    _description :: Text
   }
   deriving (Eq, Show)
+
+makeLenses ''Transaction
 
 instance Serialize Transaction where
   put (Transaction a dt t d) = do

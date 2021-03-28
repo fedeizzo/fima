@@ -3,11 +3,12 @@
 module Data.Transaction.Operations where
 
 import qualified Data.ByteString as B
-import Data.Sequence (Seq, fromList, (|>))
+import Data.Sequence (Seq)
 import Data.Serialize (decode, encode)
 import Data.Text (Text)
 import Data.Time.Calendar
 import Data.Transaction.Type
+import Lens.Micro.Extras (view)
 
 mkTransaction ::
   Double ->
@@ -25,13 +26,13 @@ mkTransaction am year month day ty de =
     dt = fromGregorianValid year month day
 
 evalTransactions :: [Transaction] -> Double
-evalTransactions ts = foldl (\acc x -> acc + amount x) 0 ts
+evalTransactions ts = foldl (\acc x -> acc + view amount x) 0 ts
 
 filterTransactionType :: TransactionType -> [Transaction] -> [Transaction]
-filterTransactionType ty ts = filter (\x -> transactionType x == ty) ts
+filterTransactionType ty ts = filter (\x -> view transactionType x == ty) ts
 
 filterDate :: Day -> Day -> [Transaction] -> [Transaction]
-filterDate start end ts = filter (\x -> start <= date x && end >= date x) ts
+filterDate start end ts = filter (\x -> start <= view date x && end >= view date x) ts
 
 saveTransactions :: String -> Seq Transaction -> IO ()
 saveTransactions path ts = do

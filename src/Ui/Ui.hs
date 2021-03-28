@@ -1,43 +1,44 @@
 module Ui.Ui where
 
 import Brick
+import Brick.Forms (Form, renderForm)
 import Brick.Main as M
 import qualified Brick.Types as T
 import Brick.Widgets.Border as B
 import Brick.Widgets.Center as C
+import Brick.Widgets.List as L
+import Data.Sequence (Seq)
 import Data.Transaction.Transaction
 import qualified Graphics.Vty as V
-import Ui.Transaction (tranStyleMap, transactionRow)
+import Ui.CommandsPanel
+import Ui.RenderName
+import Ui.Transaction as Tran
 
-data Name
-  = VP1
-  deriving (Ord, Show, Eq)
-
-transactionHeader :: Widget Name
-transactionHeader = vLimit 1 $ hBox $ fmap (C.center . str) ["Amount", "Date", "Type", "Desc"]
-
-drawUi :: () -> [Widget Name]
-drawUi = const [ui]
+drawUi :: (L.List RenderName Transaction, Form Transaction e RenderName) -> [Widget RenderName]
+drawUi s = [ui]
   where
-    ui = B.border $ hBox [hLimitPercent 66 transactions, B.vBorder, insert]
-    transactions = vBox [vLimitPercent 50 transactionHeader, B.hBorder, viewport VP1 Vertical $ vBox $ fmap transactionRow [t_example, t_example2, t_example3, t_example4]]
-    insert = vBox [str "I do not know", B.hBorder, str "The same here"]
+    (l, t) = s
+    ui = B.border $ hBox [hLimitPercent 66 transactions, B.vBorder, rightPanel]
+    transactions = vBox [Tran.header, B.hBorder, L.renderList Tran.listDrawElement True l]
+    rightPanel = vBox [commandsPanel, B.hBorder, renderForm t]
 
-vp1Scroll :: M.ViewportScroll Name
-vp1Scroll = M.viewportScroll VP1
+appEvent :: (L.List RenderName Transaction, Form Transaction e RenderName) -> T.BrickEvent RenderName e -> T.EventM RenderName (T.Next (L.List RenderName Transaction, Form Transaction e RenderName))
+-- appEvent s (T.VtyEvent (V.EvKey V.KDown [])) = M.vScrollBy vp1Scroll 1 >> M.continue s
+-- appEvent s (T.VtyEvent (V.EvKey V.KUp [])) = M.vScrollBy vp1Scroll (-1) >> M.continue s
+-- appEvent s (T.VtyEvent (V.EvKey (V.KChar 'j') [])) = M.vScrollBy vp1Scroll 1 >> M.continue s
+-- appEvent s (T.VtyEvent (V.EvKey (V.KChar 'k') [])) = M.vScrollBy vp1Scroll (-1) >> M.continue s
+appEvent s (T.VtyEvent (V.EvKey V.KEsc [])) = M.halt s
+appEvent s _ = M.continue s
 
-appEvent :: () -> T.BrickEvent Name e -> T.EventM Name (T.Next ())
-appEvent _ (T.VtyEvent (V.EvKey V.KDown [])) = M.vScrollBy vp1Scroll 1 >> M.continue ()
-appEvent _ (T.VtyEvent (V.EvKey V.KUp [])) = M.vScrollBy vp1Scroll (-1) >> M.continue ()
-appEvent _ (T.VtyEvent (V.EvKey V.KEsc [])) = M.halt ()
-appEvent _ _ = M.continue ()
+commonStyle :: [(AttrName, V.Attr)]
+commonStyle = []
 
-app :: M.App () e Name
+app :: M.App (L.List RenderName Transaction, Form Transaction e RenderName) e RenderName
 app =
   M.App
     { M.appDraw = drawUi,
       M.appStartEvent = return,
       M.appHandleEvent = appEvent,
-      M.appAttrMap = const tranStyleMap,
+      M.appAttrMap = const $ attrMap V.defAttr $ mconcat [commonStyle, Tran.style],
       M.appChooseCursor = M.neverShowCursor
     }

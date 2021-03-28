@@ -2,13 +2,20 @@
 
 module Main where
 
+import Brick.Forms (Form)
 import Brick.Main as M
+import Brick.Widgets.List (List)
 import Control.Monad.State
 import Data.Either (isRight)
+import Data.Sequence (fromList)
 import Data.Text (Text)
 import Data.Text.IO as T (getLine, putStr, putStrLn)
+import Data.Time (fromGregorian)
 import Data.Transaction.Transaction
+import Data.Transaction.Type
 import System.Posix.Env (getEnvDefault)
+import Ui.RenderName
+import Ui.Transaction
 import Ui.Ui
 
 -- loop :: StateT (Seq Transaction) IO ()
@@ -63,5 +70,12 @@ import Ui.Ui
 -- main :: IO ()
 -- main = runStateT loop (fromList [] :: Seq Transaction) >> return ()
 
+initialForm :: Form Transaction e RenderName
+initialForm = form $ Transaction 500 (fromGregorian 2021 1 1) Income "Prova"
+
+initialList :: List RenderName Transaction
+initialList = list $ fromList [t_example]
+
 main :: IO ()
-main = void $ M.defaultMain app ()
+main = do
+  void $ M.defaultMain app (initialList, initialForm)

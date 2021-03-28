@@ -4,6 +4,7 @@ import Data.Text.Arbitrary
 import Data.Time.Calendar
 import Data.Transaction.Operations
 import Data.Transaction.Type
+import Lens.Micro.Extras (view)
 import Test.Hspec
 import Test.Hspec.QuickCheck
 import Test.QuickCheck hiding (Result)
@@ -61,7 +62,7 @@ prop_mkTransactionError = do
 prop_evalTransactions :: Gen Result
 prop_evalTransactions = do
   ts <- arbitrary :: Gen [Transaction]
-  let expected = foldl (+) 0 $ fmap amount ts
+  let expected = foldl (+) 0 $ fmap (view amount) ts
   let real = evalTransactions ts
   return $
     if real == expected
